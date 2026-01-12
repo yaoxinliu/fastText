@@ -48,8 +48,8 @@ fi
 cat wet.paths | xargs -n 1 -P "${NUM_LANGID}" -I '{}' sh process_wet_file.sh "${URL}{}"
 
 ## Deduplication
-g++ -std=c++11 -O3 -o dedup dedup.cc
-g++ -std=c++11 -O3 -o filter_utf8 filter_utf8.cc
+clang++ -std=c++11 -stdlib=libc++ -O3 -o dedup dedup.cc
+clang++ -std=c++11 -stdlib=libc++ -O3 -o filter_utf8 filter_utf8.cc
 find shard -name '*.txt' | xargs -n 1 -P "${NUM_DEDUP}" -I '{}' sh filter_dedup.sh "{}"
 
 ## Example of data filtering + tokenization

@@ -17,7 +17,7 @@ make opt
 popd
 ft=${FASTTEXTDIR}/fasttext
 
-g++ -std=c++0x eval.cpp -o eval
+clang++ -std=c++11 -stdlib=libc++ eval.cpp -o eval
 
 ## Train model and test it on validation:
 

@@ -6,9 +6,9 @@
 # LICENSE file in the root directory of this source tree.
 #
 
-CXX = c++
-CXXFLAGS = -pthread -std=c++11 -march=native
-OBJS = args.o autotune.o matrix.o dictionary.o loss.o productquantizer.o densematrix.o quantmatrix.o vector.o model.o utils.o meter.o fasttext.o
+CXX = clang++
+CXXFLAGS = -pthread -std=c++11 -stdlib=libc++ -march=native
+OBJS = args.o autotune.o matrix.o dictionary.o loss.o productquantizer.o densematrix.o quantmatrix.o vector.o model.o utils.o meter.o fasttext.o -lc++ -lc++abi -lunwind
 INCLUDES = -I.
 
 opt: CXXFLAGS += -O3 -funroll-loops -DNDEBUG
