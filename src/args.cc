@@ -8,8 +8,8 @@
 
 #include "args.h"
 
-#include <stdlib.h>
-
+#include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -55,14 +55,14 @@ Args::Args() {
 
 std::string Args::lossToString(loss_name ln) const {
   switch (ln) {
-    case loss_name::hs:
-      return "hs";
-    case loss_name::ns:
-      return "ns";
-    case loss_name::softmax:
-      return "softmax";
-    case loss_name::ova:
-      return "one-vs-all";
+  case loss_name::hs:
+    return "hs";
+  case loss_name::ns:
+    return "ns";
+  case loss_name::softmax:
+    return "softmax";
+  case loss_name::ova:
+    return "one-vs-all";
   }
   return "Unknown loss!"; // should never happen
 }
@@ -77,35 +77,35 @@ std::string Args::boolToString(bool b) const {
 
 std::string Args::modelToString(model_name mn) const {
   switch (mn) {
-    case model_name::cbow:
-      return "cbow";
-    case model_name::sg:
-      return "sg";
-    case model_name::sup:
-      return "sup";
+  case model_name::cbow:
+    return "cbow";
+  case model_name::sg:
+    return "sg";
+  case model_name::sup:
+    return "sup";
   }
   return "Unknown model name!"; // should never happen
 }
 
 std::string Args::metricToString(metric_name mn) const {
   switch (mn) {
-    case metric_name::f1score:
-      return "f1score";
-    case metric_name::f1scoreLabel:
-      return "f1scoreLabel";
-    case metric_name::precisionAtRecall:
-      return "precisionAtRecall";
-    case metric_name::precisionAtRecallLabel:
-      return "precisionAtRecallLabel";
-    case metric_name::recallAtPrecision:
-      return "recallAtPrecision";
-    case metric_name::recallAtPrecisionLabel:
-      return "recallAtPrecisionLabel";
+  case metric_name::f1score:
+    return "f1score";
+  case metric_name::f1scoreLabel:
+    return "f1scoreLabel";
+  case metric_name::precisionAtRecall:
+    return "precisionAtRecall";
+  case metric_name::precisionAtRecallLabel:
+    return "precisionAtRecallLabel";
+  case metric_name::recallAtPrecision:
+    return "recallAtPrecision";
+  case metric_name::recallAtPrecisionLabel:
+    return "recallAtPrecisionLabel";
   }
   return "Unknown metric name!"; // should never happen
 }
 
-void Args::parseArgs(const std::vector<std::string>& args) {
+void Args::parseArgs(const std::vector<std::string> &args) {
   std::string command(args[1]);
   if (command == "supervised") {
     model = model_name::sup;
@@ -159,8 +159,8 @@ void Args::parseArgs(const std::vector<std::string>& args) {
           loss = loss_name::ns;
         } else if (args.at(ai + 1) == "softmax") {
           loss = loss_name::softmax;
-        } else if (
-            args.at(ai + 1) == "one-vs-all" || args.at(ai + 1) == "ova") {
+        } else if (args.at(ai + 1) == "one-vs-all" ||
+                   args.at(ai + 1) == "ova") {
           loss = loss_name::ova;
         } else {
           std::cerr << "Unknown loss: " << args.at(ai + 1) << std::endl;
@@ -205,7 +205,7 @@ void Args::parseArgs(const std::vector<std::string>& args) {
         autotuneValidationFile = std::string(args.at(ai + 1));
       } else if (args[ai] == "-autotune-metric") {
         autotuneMetric = std::string(args.at(ai + 1));
-        getAutotuneMetric(); // throws exception if not able to parse
+        getAutotuneMetric();      // throws exception if not able to parse
         getAutotuneMetricLabel(); // throws exception if not able to parse
       } else if (args[ai] == "-autotune-predictions") {
         autotunePredictions = std::stoi(args.at(ai + 1));
@@ -322,39 +322,39 @@ void Args::printQuantizationHelp() {
       << "  -dsub               size of each sub-vector [" << dsub << "]\n";
 }
 
-void Args::save(std::ostream& out) {
-  out.write((char*)&(dim), sizeof(int));
-  out.write((char*)&(ws), sizeof(int));
-  out.write((char*)&(epoch), sizeof(int));
-  out.write((char*)&(minCount), sizeof(int));
-  out.write((char*)&(neg), sizeof(int));
-  out.write((char*)&(wordNgrams), sizeof(int));
-  out.write((char*)&(loss), sizeof(loss_name));
-  out.write((char*)&(model), sizeof(model_name));
-  out.write((char*)&(bucket), sizeof(int));
-  out.write((char*)&(minn), sizeof(int));
-  out.write((char*)&(maxn), sizeof(int));
-  out.write((char*)&(lrUpdateRate), sizeof(int));
-  out.write((char*)&(t), sizeof(double));
+void Args::save(std::ostream &out) {
+  out.write((char *)&(dim), sizeof(int));
+  out.write((char *)&(ws), sizeof(int));
+  out.write((char *)&(epoch), sizeof(int));
+  out.write((char *)&(minCount), sizeof(int));
+  out.write((char *)&(neg), sizeof(int));
+  out.write((char *)&(wordNgrams), sizeof(int));
+  out.write((char *)&(loss), sizeof(loss_name));
+  out.write((char *)&(model), sizeof(model_name));
+  out.write((char *)&(bucket), sizeof(int));
+  out.write((char *)&(minn), sizeof(int));
+  out.write((char *)&(maxn), sizeof(int));
+  out.write((char *)&(lrUpdateRate), sizeof(int));
+  out.write((char *)&(t), sizeof(double));
 }
 
-void Args::load(std::istream& in) {
-  in.read((char*)&(dim), sizeof(int));
-  in.read((char*)&(ws), sizeof(int));
-  in.read((char*)&(epoch), sizeof(int));
-  in.read((char*)&(minCount), sizeof(int));
-  in.read((char*)&(neg), sizeof(int));
-  in.read((char*)&(wordNgrams), sizeof(int));
-  in.read((char*)&(loss), sizeof(loss_name));
-  in.read((char*)&(model), sizeof(model_name));
-  in.read((char*)&(bucket), sizeof(int));
-  in.read((char*)&(minn), sizeof(int));
-  in.read((char*)&(maxn), sizeof(int));
-  in.read((char*)&(lrUpdateRate), sizeof(int));
-  in.read((char*)&(t), sizeof(double));
+void Args::load(std::istream &in) {
+  in.read((char *)&(dim), sizeof(int));
+  in.read((char *)&(ws), sizeof(int));
+  in.read((char *)&(epoch), sizeof(int));
+  in.read((char *)&(minCount), sizeof(int));
+  in.read((char *)&(neg), sizeof(int));
+  in.read((char *)&(wordNgrams), sizeof(int));
+  in.read((char *)&(loss), sizeof(loss_name));
+  in.read((char *)&(model), sizeof(model_name));
+  in.read((char *)&(bucket), sizeof(int));
+  in.read((char *)&(minn), sizeof(int));
+  in.read((char *)&(maxn), sizeof(int));
+  in.read((char *)&(lrUpdateRate), sizeof(int));
+  in.read((char *)&(t), sizeof(double));
 }
 
-void Args::dump(std::ostream& out) const {
+void Args::dump(std::ostream &out) const {
   out << "dim"
       << " " << dim << std::endl;
   out << "ws"
@@ -383,15 +383,13 @@ void Args::dump(std::ostream& out) const {
       << " " << t << std::endl;
 }
 
-bool Args::hasAutotune() const {
-  return !autotuneValidationFile.empty();
-}
+bool Args::hasAutotune() const { return !autotuneValidationFile.empty(); }
 
-bool Args::isManual(const std::string& argName) const {
+bool Args::isManual(const std::string &argName) const {
   return (manualArgs_.count(argName) != 0);
 }
 
-void Args::setManual(const std::string& argName) {
+void Args::setManual(const std::string &argName) {
   manualArgs_.emplace(argName);
 }
 
@@ -421,9 +419,8 @@ std::string Args::getAutotuneMetricLabel() const {
   std::string label;
   if (metric == metric_name::f1scoreLabel) {
     label = autotuneMetric.substr(3);
-  } else if (
-      metric == metric_name::precisionAtRecallLabel ||
-      metric == metric_name::recallAtPrecisionLabel) {
+  } else if (metric == metric_name::precisionAtRecallLabel ||
+             metric == metric_name::recallAtPrecisionLabel) {
     size_t semicolon = autotuneMetric.find(":", 18);
     label = autotuneMetric.substr(semicolon + 1);
   } else {
@@ -458,12 +455,8 @@ int64_t Args::getAutotuneModelSize() const {
     return Args::kUnlimitedModelSize;
   }
   std::unordered_map<char, int> units = {
-      {'k', 1000},
-      {'K', 1000},
-      {'m', 1000000},
-      {'M', 1000000},
-      {'g', 1000000000},
-      {'G', 1000000000},
+      {'k', 1000},    {'K', 1000},       {'m', 1000000},
+      {'M', 1000000}, {'g', 1000000000}, {'G', 1000000000},
   };
   uint64_t multiplier = 1;
   char lastCharacter = modelSize.back();
@@ -476,15 +469,15 @@ int64_t Args::getAutotuneModelSize() const {
   bool parseError = false;
   try {
     size = std::stol(modelSize, &nonNumericCharacter);
-  } catch (std::invalid_argument&) {
+  } catch (std::invalid_argument &) {
     parseError = true;
   }
   if (!parseError && nonNumericCharacter != modelSize.size()) {
     parseError = true;
   }
   if (parseError) {
-    throw std::invalid_argument(
-        "Unable to parse model size " + autotuneModelSize);
+    throw std::invalid_argument("Unable to parse model size " +
+                                autotuneModelSize);
   }
 
   return size * multiplier;
